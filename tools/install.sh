@@ -21,7 +21,6 @@ main() {
     BOLD=""
     NORMAL=""
   fi
-
   # Only enable exit-on-error after the non-critical colorization stuff,
   # which may fail on systems lacking tput or terminfo
   set -e
@@ -47,12 +46,14 @@ main() {
 
   gimp_ps_directory="$HOME/.gimp-$version"
 
-  # Backup previous directory
-  now=$(date +"%Y%m%d%H%M%S")
-  mv "$gimp_ps_directory" "$gimp_ps_directory.backup.$now"
+  # Backup previous directory, if any
+  if [ -e "$gimp_ps_directory" ]; then
+    now=$(date +"%Y%m%d%H%M%S")
+    mv "$gimp_ps_directory" "$gimp_ps_directory.backup.$now"
+  fi
 
   env git clone --depth=1 https://github.com/doctormo/GimpPs.git $gimp_ps_directory || {
-    printf "Error: git clone of oh-my-zsh repo failed\n"
+    printf "Error: git clone of GimpPs repo failed\n"
     exit 1
   }
 
